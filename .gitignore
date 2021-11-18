@@ -1,3 +1,6 @@
+# my ignores
+*.vscode
+
 # Prerequisites
 *.d
 

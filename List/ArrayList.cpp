@@ -30,7 +30,7 @@ public:
     E getValue() const;
     int Search(E item) const;
 
-    void operator=(ArrayList<E> &);
+    ArrayList<E> &operator=(ArrayList<E> &);
 };
 
 template <class E>
@@ -79,6 +79,11 @@ ArrayList<E>::~ArrayList()
     delete[] listArray;
 }
 
+/**
+ * @brief clearing the list with O(size) complexity
+ * 
+ * @tparam E 
+ */
 template <class E>
 void ArrayList<E>::clear()
 {
@@ -88,6 +93,12 @@ void ArrayList<E>::clear()
     listArray = new E[maxSize];
 }
 
+/**
+ * @brief inserting in the current position with O(size) complexity
+ * 
+ * @tparam E 
+ * @param item 
+ */
 template <class E>
 void ArrayList<E>::insert(E item)
 {
@@ -102,6 +113,12 @@ void ArrayList<E>::insert(E item)
     listSize++;
 }
 
+/**
+ * @brief appending at the end of the list with O(1) complexity
+ * 
+ * @tparam E 
+ * @param item 
+ */
 template <class E>
 void ArrayList<E>::append(E item)
 {
@@ -114,6 +131,12 @@ void ArrayList<E>::append(E item)
     listSize++;
 }
 
+/**
+ * @brief removing the current element with O(size) complexity
+ * 
+ * @tparam E 
+ * @return E 
+ */
 template <class E>
 E ArrayList<E>::remove()
 {
@@ -125,18 +148,33 @@ E ArrayList<E>::remove()
     return temp;
 }
 
+/**
+ * @brief complexity O(1)
+ * 
+ * @tparam E 
+ */
 template <class E>
 void ArrayList<E>::moveToStart()
 {
     cur = 0;
 }
 
+/**
+ * @brief complexity O(1)
+ * 
+ * @tparam E 
+ */
 template <class E>
 void ArrayList<E>::moveToEnd()
 {
     cur = listSize;
 }
 
+/**
+ * @brief complexity O(1)
+ * 
+ * @tparam E 
+ */
 template <class E>
 void ArrayList<E>::prev()
 {
@@ -144,6 +182,11 @@ void ArrayList<E>::prev()
         cur--;
 }
 
+/**
+ * @brief complexity O(1)
+ * 
+ * @tparam E 
+ */
 template <class E>
 void ArrayList<E>::next()
 {
@@ -151,18 +194,36 @@ void ArrayList<E>::next()
         cur++;
 }
 
+/**
+ * @brief complexity O(1)
+ * 
+ * @tparam E 
+ * @return int 
+ */
 template <class E>
 int ArrayList<E>::length() const
 {
     return listSize;
 }
 
+/**
+ * @brief returns the current position with O(1) complexity
+ * 
+ * @tparam E 
+ * @return int 
+ */
 template <class E>
 int ArrayList<E>::curPos() const
 {
     return cur;
 }
 
+/**
+ * @brief complexity O(1)
+ * 
+ * @tparam E 
+ * @param pos 
+ */
 template <class E>
 void ArrayList<E>::moveToPos(int pos)
 {
@@ -170,6 +231,12 @@ void ArrayList<E>::moveToPos(int pos)
     cur = pos;
 }
 
+/**
+ * @brief returns the current value with O(1) complexity
+ * 
+ * @tparam E 
+ * @return E 
+ */
 template <class E>
 E ArrayList<E>::getValue() const
 {
@@ -177,6 +244,13 @@ E ArrayList<E>::getValue() const
     return listArray[cur];
 }
 
+/**
+ * @brief returns the index of the first occurance and -1 if not present in the list. Complexity O(size).
+ * 
+ * @tparam E 
+ * @param item 
+ * @return int 
+ */
 template <class E>
 int ArrayList<E>::Search(E item) const
 {
@@ -188,8 +262,22 @@ int ArrayList<E>::Search(E item) const
     return -1;
 }
 
+/**
+ * @brief complexity O(size)
+ * 
+ * @tparam E 
+ * @param a 
+ */
+
+/**
+ * @brief have bugs
+ * 
+ * @tparam E 
+ * @param a 
+ * @return ArrayList<E>& 
+ */
 template <class E>
-void ArrayList<E>::operator=(ArrayList<E> &a)
+ArrayList<E> &ArrayList<E>::operator=(ArrayList<E> &a)
 {
     listSize = a.length();
     maxSize = listSize;
@@ -201,4 +289,5 @@ void ArrayList<E>::operator=(ArrayList<E> &a)
         a.next();
     }
     a.moveToPos(cur);
+    return a;
 }

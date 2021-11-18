@@ -1,5 +1,6 @@
 #include <iostream>
-#include "ArrayList.cpp"
+//#include "ArrayList.cpp"
+#include "LinkedList.cpp"
 using namespace std;
 
 //printing function for List
@@ -29,14 +30,15 @@ int main()
 {
     int k, x;
     cin >> k >> x;
-    ArrayList<int> aList(x);
+    //ArrayList<int> list(x);
+    LinkedList<int> list(x);
     for (int i = 0; i < k; i++)
     {
         int a;
         cin >> a;
-        aList.append(a);
+        list.append(a);
     }
-    printList(aList);
+    printList(list);
     while (77)
     {
         int q, p;
@@ -48,56 +50,56 @@ int main()
         switch (q)
         {
         case 1:
-            aList.clear();
+            list.clear();
             cout << "-1\n";
             break;
         case 2:
-            aList.insert(p);
+            list.insert(p);
             cout << "-1\n";
             break;
         case 3:
-            aList.append(p);
+            list.append(p);
             cout << "-1\n";
             break;
         case 4:
-            cout << (aList.remove()) << "\n";
+            cout << (list.remove()) << "\n";
             break;
         case 5:
-            aList.moveToStart();
+            list.moveToStart();
             cout << "-1\n";
             break;
         case 6:
-            aList.moveToEnd();
+            list.moveToEnd();
             cout << "-1\n";
             break;
         case 7:
-            aList.prev();
+            list.prev();
             cout << "-1\n";
             break;
         case 8:
-            aList.next();
+            list.next();
             cout << "-1\n";
             break;
         case 9:
-            cout << "Length: " << aList.length() << "\n";
+            cout << "Length: " << list.length() << "\n";
             break;
         case 10:
-            cout << "Current Position: " << aList.curPos() << "\n";
+            cout << "Current Position: " << list.curPos() << "\n";
             break;
         case 11:
-            aList.moveToPos(p);
+            list.moveToPos(p);
             cout << "-1\n";
             break;
         case 12:
-            cout << "Value: " << aList.getValue() << "\n";
+            cout << "Value: " << list.getValue() << "\n";
             break;
         case 13:
-            cout << "Search Index: " << aList.Search(p) << "\n";
+            cout << "Search Index: " << list.Search(p) << "\n";
             break;
         default:
             break;
         }
-        printList(aList);
+        printList(list);
     }
     return 0;
 }
