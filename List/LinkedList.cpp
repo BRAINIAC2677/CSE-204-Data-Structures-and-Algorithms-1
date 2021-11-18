@@ -41,7 +41,7 @@ class LinkedList : public List<E>
 
 public:
     LinkedList(int maxSize = 1000);
-    LinkedList(List<E> &);
+    LinkedList(LinkedList<E> &);
     ~LinkedList();
     void clear();
     void insert(E item);
@@ -85,7 +85,7 @@ LinkedList<E>::LinkedList(int maxSize)
 }
 
 template <class E>
-LinkedList<E>::LinkedList(List<E> &l)
+LinkedList<E>::LinkedList(LinkedList<E> &l)
 {
     init();
     int prevPos = l.curPos();

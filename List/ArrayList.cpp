@@ -14,7 +14,7 @@ private:
 
 public:
     ArrayList(int maxSize = 1000);
-    ArrayList(List<E> &);
+    ArrayList(ArrayList<E> &);
     ~ArrayList();
     void clear();
     void insert(E item);
@@ -59,7 +59,7 @@ ArrayList<E>::ArrayList(int maxsize)
 }
 
 template <class E>
-ArrayList<E>::ArrayList(List<E> &l)
+ArrayList<E>::ArrayList(ArrayList<E> &l)
 {
     listSize = l.length();
     maxSize = listSize;
@@ -263,31 +263,24 @@ int ArrayList<E>::Search(E item) const
 }
 
 /**
- * @brief complexity O(size)
- * 
- * @tparam E 
- * @param a 
- */
-
-/**
- * @brief have bugs
+ * @brief assignment operator overloading
  * 
  * @tparam E 
  * @param a 
  * @return ArrayList<E>& 
  */
 template <class E>
-ArrayList<E> &ArrayList<E>::operator=(ArrayList<E> &a)
+ArrayList<E> &ArrayList<E>::operator=(ArrayList<E> &l)
 {
-    listSize = a.length();
+    listSize = l.length();
     maxSize = listSize;
-    cur = a.curPos();
+    cur = l.curPos();
     listArray = new E[maxSize];
     for (int i = 0; i < listSize; i++)
     {
-        listArray[i] = a.getValue();
-        a.next();
+        listArray[i] = l.getValue();
+        l.next();
     }
-    a.moveToPos(cur);
-    return a;
+    l.moveToPos(cur);
+    return l;
 }

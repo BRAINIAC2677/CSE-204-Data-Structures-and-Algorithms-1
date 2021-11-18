@@ -1,10 +1,11 @@
 #include <iostream>
-//#include "ArrayList.cpp"
-#include "LinkedList.cpp"
+#include "ArrayList.cpp"
+//#include "LinkedList.cpp"
 using namespace std;
 
 //printing function for List
-void printList(List<int> &list)
+template <class E>
+void printList(List<E> &list)
 {
     int prevPos = list.curPos();
     int j = prevPos;
@@ -30,8 +31,8 @@ int main()
 {
     int k, x;
     cin >> k >> x;
-    //ArrayList<int> list(x);
-    LinkedList<int> list(x);
+    ArrayList<int> list(x);
+    //LinkedList<int> list(x);
     for (int i = 0; i < k; i++)
     {
         int a;
