@@ -1,4 +1,5 @@
 from LinkedList import LinkedList
+from ArrayList import ArrayList
 
 def printList(bist):
     prevPos = bist.currPos()
@@ -17,7 +18,8 @@ def printList(bist):
 
 def main():
     k,x = map(int, input().strip().split())
-    bist = LinkedList()
+    bist = ArrayList()
+    #bist = LinkedList()
     for value in list(map(int, input().strip().split())):
         bist.append(value)
     printList(bist)
@@ -62,4 +64,4 @@ def main():
         printList(bist)
 
 
-main()
+# main()
