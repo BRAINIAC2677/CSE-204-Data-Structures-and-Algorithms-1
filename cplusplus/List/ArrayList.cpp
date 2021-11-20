@@ -14,7 +14,7 @@ private:
 
 public:
     ArrayList(int maxSize = 1000);
-    ArrayList(ArrayList<E> &);
+    ArrayList(List<E> &);
     ~ArrayList();
     void clear();
     void insert(E item);
@@ -59,7 +59,7 @@ ArrayList<E>::ArrayList(int maxsize)
 }
 
 template <class E>
-ArrayList<E>::ArrayList(ArrayList<E> &l)
+ArrayList<E>::ArrayList(List<E> &l)
 {
     listSize = l.length();
     maxSize = listSize;
