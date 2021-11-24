@@ -2,25 +2,27 @@ from LinkedList import LinkedList
 from ArrayList import ArrayList
 
 def printList(bist):
-    prevPos = bist.currPos()
-    barPos = prevPos
-    bist.moveToStart()
-    for _ in range(bist.length()):
-        if barPos == 0:
-            print('|', end=' ')
-        barPos -= 1
-        print(bist.getValue(), end=' ')
-        bist.next()
-    if barPos == 0:
-        print('|', end=' ')
-    print()
-    bist.moveToPos(prevPos)
+    if bist.length() == 0:
+        print("<>")
+    else:
+        prevPos = bist.currPos()
+        barPos = prevPos
+        bist.moveToStart()
+        print('<', end='')
+        for i in range(bist.length()):
+            if barPos == 0:
+                print('|', end=' ')
+            barPos -= 1
+            print(bist.getValue(), end='' if i == bist.length() - 1 else ' ')
+            bist.next()
+        print('>')
+        bist.moveToPos(prevPos)
 
 def main():
     k,x = map(int, input().strip().split())
-    bist = ArrayList()
+    bist = ArrayList(x)
     #bist = LinkedList()
-    for value in list(map(int, input().strip().split())):
+    for value in list(map(int, input().strip().split()[:k])):
         bist.append(value)
     printList(bist)
     while True:
@@ -29,39 +31,56 @@ def main():
             break
         if q == 1:
             bist.clear()
+            printList(bist)
             print('-1')
         elif q == 2:
             bist.insert(p)
+            printList(bist)
             print('-1')
         elif q == 3:
             bist.append(p)
+            printList(bist)
             print('-1')
         elif q == 4:
-            print(bist.remove())
+            removed = bist.remove()
+            printList(bist)
+            print(removed)
         elif q == 5:
             bist.moveToStart()
+            printList(bist)
             print('-1')
         elif q == 6:
             bist.moveToEnd()
+            printList(bist)
             print('-1')
         elif q == 7:
             bist.prev()
+            printList(bist)
             print('-1')
         elif q == 8:
             bist.next()
+            printList(bist)
             print('-1')
         elif q == 9:
-            print(bist.length())
+            l = bist.length()
+            printList(bist)
+            print(l)
         elif q == 10:
-            print(bist.currPos())
+            pos = bist.currPos()
+            printList(bist)
+            print(pos)
         elif q == 11:
             bist.moveToPos(p)
+            printList(bist)
             print('-1')
         elif q == 12:
-            print(bist.getValue())
+            val = bist.getValue()
+            printList(bist)
+            print(val)
         elif q == 13:
-            print(bist.Search(p))
-        printList(bist)
+            index = bist.Search(p)
+            printList(bist)
+            print(index)
 
 
-# main()
+main()

@@ -1,5 +1,6 @@
 # my ignores
 *.vscode
+*__pycache__
 
 # Prerequisites
 *.d

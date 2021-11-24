@@ -15,25 +15,30 @@ class Node:
     
 
 class LinkedList(List):
-    def __init__(self, arg = None):
-        assert arg is None or isinstance(arg, List), "Invalid Initialization"
+    def __myInit(self):
         self.head = Node()
         self.tail = self.head
-        self.curr = self.head
+        self.curr = self.head #curr of empty list points to the head
         self.size = 0
-        if isinstance(arg, List):
+        
+    def __init__(self, arg = None):
+        """
+            valid 2 initializer:
+            1| LinkedList()
+            2| LinkedList(List)
+        """
+        assert arg is None or isinstance(arg, List), "Invalid Initialization"
+        self.__myInit()
+        if isinstance(arg, List) and arg.length() > 0:
             prevPos = arg.currPos()
             arg.moveToStart()
-            for i in range(arg.length()):
+            for _ in range(arg.length()):
                 self.append(arg.getValue())
                 arg.next()
             arg.moveToPos(prevPos)
 
     def clear(self):
-        self.head = Node()
-        self.tail = self.head
-        self.curr = self.head
-        self.size = 0
+        self.__myInit()
     
     def insert(self, item):
         newNode = Node(item, self.curr.getNext())
@@ -49,19 +54,27 @@ class LinkedList(List):
         self.size += 1
 
     def remove(self):
-        assert self.curr.getNext() is not None, "Cannot remove from an empty list"
+        """remove the current element and points to the next element. 
+        But if the last element is removed the curr moves to the prev element.
+        Returns:
+            [list element type]: [removed item]
+        """
+        assert self.size > 0, "can not remove from an empty list"
+        self.size -= 1
         temp = self.curr.getNext()
         self.curr.setNext(temp.getNext())
-        self.size -= 1
-        if self.curr.getNext() is None:
+        if temp.getNext() is None:
             self.tail = self.curr
+            self.prev()
         return temp.getData()
 
     def moveToStart(self):
         self.curr = self.head
 
     def moveToEnd(self):
-        self.curr = self.tail
+        self.moveToStart()
+        for _ in range(self.length()):
+            self.next()
 
     def prev(self):
         if self.curr is not self.head:
@@ -71,13 +84,14 @@ class LinkedList(List):
             self.curr = temp
     
     def next(self):
-        if self.curr is not self.tail:
+        if self.curr.getNext() is not None and self.curr.getNext().getNext() is not None:
             self.curr = self.curr.getNext()
     
     def length(self):
         return self.size
 
     def currPos(self):
+        assert self.size > 0, "No current element in an empty list"
         index = 0
         temp = self.head
         while temp is not self.curr:
@@ -86,12 +100,14 @@ class LinkedList(List):
         return index
     
     def moveToPos(self, pos):
+        #moving to a position in an empty list is an invalid opeartion
+        assert (pos >= 0) and (pos < self.size), "invalid index"
         self.curr = self.head
         for _ in range(pos):
             self.curr = self.curr.getNext()
 
     def getValue(self):
-        assert self.curr.getNext() is not None,"End of the list"
+        assert self.size > 0, "No current element in an empty list"
         return self.curr.getNext().getData()
     
     def Search(self, item):
