@@ -2,7 +2,8 @@ from List import List
 
 class ArrayList(List):
     #private helper methods
-    def __myInit(self, chunkSize = 1000):
+    def __myInit(self, chunkSize = 100000):
+        assert self.chunkSize > 0, "invalid chunksize"
         self.curr = 0
         self.size = 0
         self.chunkSize = chunkSize
@@ -87,6 +88,8 @@ class ArrayList(List):
         for i in range(self.curr, self.size - 1):
             self.listArray[i] = self.listArray[i+1]
         self.size -= 1
+        if self.curr >= self.size:
+            self.curr = self.size - 1 if self.size != 0 else 0
         return temp
 
     def moveToStart(self):

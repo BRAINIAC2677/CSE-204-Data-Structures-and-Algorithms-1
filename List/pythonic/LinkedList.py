@@ -72,8 +72,7 @@ class LinkedList(List):
         self.curr = self.head
 
     def moveToEnd(self):
-        self.moveToStart()
-        for _ in range(self.length()):
+        while self.curr.getNext() is not self.tail:
             self.next()
 
     def prev(self):

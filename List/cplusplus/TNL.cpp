@@ -7,7 +7,7 @@ int main()
 {
     int k, b, t;
     cin >> k >> b;
-    //LinkedList<int> bs(b);
+    //LinkedList<int> bs;
     ArrayList<int> bs(b);
     for (int i = 0; i < b; i++)
     {
@@ -16,7 +16,7 @@ int main()
         bs.append(st);
     }
     cin >> t;
-    //LinkedList<int> ts(t);
+    //LinkedList<int> ts;
     ArrayList<int> ts(t);
     for (int i = 0; i < t; i++)
     {
@@ -34,36 +34,29 @@ int main()
             cout << i;
             cout << (i == k - 1 ? "\n" : ",");
         }
-        for (int i = 0, j = 0; i < bs.length(); i++, j++)
+        for (int i = 0; i < k; i++)
         {
-            int cur = bs.getValue();
-            while (j < cur)
+            int index = bs.Search(i);
+            if (index == -1)
             {
-                cout << ",";
-                j++;
+                cout << "," << (i == k - 1 ? "\n" : "");
             }
-            cout << cur;
-            if (cur != k - 1)
+            else
             {
-                cout << ",";
+                cout << i << (i == k - 1 ? "\n" : ",");
             }
-            bs.next();
         }
-        cout << "\n";
-        for (int i = 0, j = 0; i < ts.length(); i++, j++)
+        for (int i = 0; i < k; i++)
         {
-            int cur = ts.getValue();
-            while (j < cur)
+            int index = ts.Search(i);
+            if (index == -1)
             {
-                cout << ",";
-                j++;
+                cout << "," << (i == k - 1 ? "\n" : "");
             }
-            cout << cur;
-            if (cur != k - 1)
+            else
             {
-                cout << ",";
+                cout << i << (i == k - 1 ? "\n" : ",");
             }
-            ts.next();
         }
     }
     return 0;

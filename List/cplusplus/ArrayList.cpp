@@ -2,19 +2,23 @@
 #include "List.cpp"
 using namespace std;
 
+#define defaultSize 100000
+
 template <class E>
 class ArrayList : public List<E>
 {
 private:
-    int listSize;
-    int maxSize;
-    int cur;
+    int size;
+    int chunkSize;
+    int capacity;
+    int curr;
     E *listArray;
     void increaseSize(); //private helper function
 
 public:
-    ArrayList(int maxSize = 1000);
-    ArrayList(List<E> &);
+    ArrayList(int chunkSize = defaultSize);
+    ArrayList(ArrayList<E> &);
+    ArrayList(int chunkSize, ArrayList<E> &);
     ~ArrayList();
     void clear();
     void insert(E item);
@@ -25,7 +29,7 @@ public:
     void prev();
     void next();
     int length() const;
-    int curPos() const;
+    int currPos() const;
     void moveToPos(int pos);
     E getValue() const;
     int Search(E item) const;
@@ -36,11 +40,11 @@ public:
 template <class E>
 void ArrayList<E>::increaseSize()
 {
-    if (listSize == maxSize)
+    if (this->size == this->capacity)
     {
-        maxSize *= 2;
-        E *newArray = new E[maxSize];
-        for (int i = 0; i < listSize; i++)
+        this->capacity += this->chunkSize;
+        E *newArray = new E[this->capacity];
+        for (int i = 0; i < size; i++)
         {
             newArray[i] = listArray[i];
         }
@@ -50,27 +54,46 @@ void ArrayList<E>::increaseSize()
 }
 
 template <class E>
-ArrayList<E>::ArrayList(int maxsize)
+ArrayList<E>::ArrayList(int chunkSize)
 {
-    listSize = 0;
-    maxSize = maxsize;
-    cur = 0;
-    listArray = new E[maxSize];
+    assert(chunkSize > 0);
+    this->chunkSize = chunkSize;
+    this->capacity = chunkSize;
+    this->size = 0;
+    curr = 0;
+    listArray = new E[this->capacity];
 }
 
 template <class E>
-ArrayList<E>::ArrayList(List<E> &l)
+ArrayList<E>::ArrayList(ArrayList<E> &list)
 {
-    listSize = l.length();
-    maxSize = listSize;
-    cur = l.curPos();
-    listArray = new E[maxSize];
-    for (int i = 0; i < listSize; i++)
+    this->size = list.length();
+    this->chunkSize = this->capacity = this->size;
+    this->curr = list.currPos();
+    this->listArray = new E[this->capacity];
+    for (int i = 0; i < size; i++)
     {
-        listArray[i] = l.getValue();
-        l.next();
+        listArray[i] = list.getValue();
+        list.next();
     }
-    l.moveToPos(cur);
+    list.moveToPos(curr);
+}
+
+template <class E>
+ArrayList<E>::ArrayList(int chunkSize, ArrayList<E> &list)
+{
+    assert(chunkSize > 0);
+    assert(chunkSize >= list.length());
+    this->chunkSize = this->capacity = chunkSize;
+    this->size = list.length();
+    this->curr = list.currPos();
+    this->listArray = new E[this->capacity];
+    for (int i = 0; i < size; i++)
+    {
+        listArray[i] = list.getValue();
+        list.next();
+    }
+    list.moveToPos(curr);
 }
 
 template <class E>
@@ -87,10 +110,11 @@ ArrayList<E>::~ArrayList()
 template <class E>
 void ArrayList<E>::clear()
 {
-    listSize = 0;
-    cur = 0;
+    this->size = 0;
+    this->curr = 0;
+    this->capacity = this->chunkSize;
     delete[] listArray;
-    listArray = new E[maxSize];
+    this->listArray = new E[this->capacity];
 }
 
 /**
@@ -102,15 +126,14 @@ void ArrayList<E>::clear()
 template <class E>
 void ArrayList<E>::insert(E item)
 {
-    if (listSize == maxSize)
+    if (size == capacity)
     {
         increaseSize();
-        assert(listSize < maxSize);
     }
-    for (int i = listSize; i > cur; i--)
+    for (int i = size; i > curr; i--)
         listArray[i] = listArray[i - 1];
-    listArray[cur] = item;
-    listSize++;
+    listArray[curr] = item;
+    size++;
 }
 
 /**
@@ -122,13 +145,12 @@ void ArrayList<E>::insert(E item)
 template <class E>
 void ArrayList<E>::append(E item)
 {
-    if (listSize == maxSize)
+    if (size == capacity)
     {
         increaseSize();
-        assert(listSize < maxSize);
     }
-    listArray[listSize] = item;
-    listSize++;
+    listArray[size] = item;
+    size++;
 }
 
 /**
@@ -140,11 +162,15 @@ void ArrayList<E>::append(E item)
 template <class E>
 E ArrayList<E>::remove()
 {
-    assert(listSize > 0);
-    E temp = listArray[cur];
-    for (int i = cur; i < listSize - 1; i++)
+    assert(size > 0);
+    E temp = listArray[curr];
+    for (int i = curr; i < size - 1; i++)
         listArray[i] = listArray[i + 1];
-    listSize--;
+    size--;
+    if (this->curr >= this->size)
+    {
+        this->curr = max(0, this->size - 1);
+    }
     return temp;
 }
 
@@ -156,7 +182,7 @@ E ArrayList<E>::remove()
 template <class E>
 void ArrayList<E>::moveToStart()
 {
-    cur = 0;
+    curr = 0;
 }
 
 /**
@@ -167,7 +193,7 @@ void ArrayList<E>::moveToStart()
 template <class E>
 void ArrayList<E>::moveToEnd()
 {
-    cur = listSize;
+    this->curr = max(0, this->size - 1);
 }
 
 /**
@@ -178,8 +204,8 @@ void ArrayList<E>::moveToEnd()
 template <class E>
 void ArrayList<E>::prev()
 {
-    if (cur > 0)
-        cur--;
+    if (curr > 0)
+        curr--;
 }
 
 /**
@@ -190,8 +216,7 @@ void ArrayList<E>::prev()
 template <class E>
 void ArrayList<E>::next()
 {
-    if (cur < listSize)
-        cur++;
+    this->curr = min(this->size - 1, this->curr + 1);
 }
 
 /**
@@ -203,7 +228,7 @@ void ArrayList<E>::next()
 template <class E>
 int ArrayList<E>::length() const
 {
-    return listSize;
+    return size;
 }
 
 /**
@@ -213,9 +238,10 @@ int ArrayList<E>::length() const
  * @return int 
  */
 template <class E>
-int ArrayList<E>::curPos() const
+int ArrayList<E>::currPos() const
 {
-    return cur;
+    assert(this->size > 0);
+    return curr;
 }
 
 /**
@@ -227,8 +253,8 @@ int ArrayList<E>::curPos() const
 template <class E>
 void ArrayList<E>::moveToPos(int pos)
 {
-    assert(pos >= 0 && pos <= listSize);
-    cur = pos;
+    assert(pos >= 0 && pos < size);
+    curr = pos;
 }
 
 /**
@@ -240,12 +266,12 @@ void ArrayList<E>::moveToPos(int pos)
 template <class E>
 E ArrayList<E>::getValue() const
 {
-    assert((cur >= 0) && (cur < listSize));
-    return listArray[cur];
+    assert(this->size > 0);
+    return listArray[curr];
 }
 
 /**
- * @brief returns the index of the first occurance and -1 if not present in the list. Complexity O(size).
+ * @brief returns the index of the first occurrance and -1 if not present in the list. Complexity O(size).
  * 
  * @tparam E 
  * @param item 
@@ -254,7 +280,7 @@ E ArrayList<E>::getValue() const
 template <class E>
 int ArrayList<E>::Search(E item) const
 {
-    for (int i = 0; i < listSize; i++)
+    for (int i = 0; i < size; i++)
     {
         if (listArray[i] == item)
             return i;
@@ -272,15 +298,15 @@ int ArrayList<E>::Search(E item) const
 template <class E>
 ArrayList<E> &ArrayList<E>::operator=(ArrayList<E> &l)
 {
-    listSize = l.length();
-    maxSize = listSize;
-    cur = l.curPos();
-    listArray = new E[maxSize];
-    for (int i = 0; i < listSize; i++)
+    size = l.length();
+    chunkSize = capacity = size;
+    curr = l.currPos();
+    listArray = new E[capacity];
+    for (int i = 0; i < size; i++)
     {
         listArray[i] = l.getValue();
         l.next();
     }
-    l.moveToPos(cur);
+    l.moveToPos(curr);
     return l;
 }

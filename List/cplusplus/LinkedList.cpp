@@ -32,7 +32,7 @@ class LinkedList : public List<E>
 {
     Node<E> *head;
     Node<E> *tail;
-    Node<E> *cur;
+    Node<E> *curr;
     int size;
 
     //helper methods inaccesible to user.
@@ -40,7 +40,7 @@ class LinkedList : public List<E>
     void removeAll();
 
 public:
-    LinkedList(int maxSize = 1000);
+    LinkedList();
     LinkedList(LinkedList<E> &);
     ~LinkedList();
     void clear();
@@ -52,7 +52,7 @@ public:
     void prev();
     void next();
     int length() const;
-    int curPos() const;
+    int currPos() const;
     void moveToPos(int pos);
     E getValue() const;
     int Search(E item) const;
@@ -63,7 +63,7 @@ public:
 template <class E>
 void LinkedList<E>::init()
 {
-    head = tail = cur = new Node<E>;
+    head = tail = curr = new Node<E>;
     size = 0;
 }
 
@@ -72,14 +72,14 @@ void LinkedList<E>::removeAll()
 {
     while (head->getNext() != nullptr)
     {
-        cur = head;
+        curr = head;
         head = head->getNext();
-        delete cur;
+        delete curr;
     }
 }
 
 template <class E>
-LinkedList<E>::LinkedList(int maxSize)
+LinkedList<E>::LinkedList()
 {
     init();
 }
@@ -88,14 +88,17 @@ template <class E>
 LinkedList<E>::LinkedList(LinkedList<E> &l)
 {
     init();
-    int prevPos = l.curPos();
-    for (int i = 0; i < l.length(); i++)
+    if (l.length() > 0)
     {
-        this->append(l.getValue());
-        l.next();
+        int prevPos = l.currPos();
+        for (int i = 0; i < l.length(); i++)
+        {
+            this->append(l.getValue());
+            l.next();
+        }
+        l.moveToPos(prevPos);
+        this->moveToPos(prevPos);
     }
-    l.moveToPos(prevPos);
-    this->moveToPos(prevPos);
 }
 
 template <class E>
@@ -125,8 +128,8 @@ template <class E>
 void LinkedList<E>::insert(E item)
 {
     Node<E> *newNode = new Node<E>(item);
-    newNode->setNext(cur->getNext());
-    cur->setNext(newNode);
+    newNode->setNext(curr->getNext());
+    curr->setNext(newNode);
     this->size++;
     //if inserted in the tail
     if (newNode->getNext() == nullptr)
@@ -159,14 +162,15 @@ void LinkedList<E>::append(E item)
 template <class E>
 E LinkedList<E>::remove()
 {
-    assert(cur->getNext() != nullptr);
+    assert(this->size > 0);
     this->size--;
-    Node<E> *temp = cur->getNext();
+    Node<E> *temp = curr->getNext();
     E value = temp->getElement();
-    cur->setNext(temp->getNext());
+    curr->setNext(temp->getNext());
     if (temp == tail)
     {
-        tail = cur;
+        tail = curr;
+        this->prev();
     }
     delete temp;
     return value;
@@ -180,7 +184,7 @@ E LinkedList<E>::remove()
 template <class E>
 void LinkedList<E>::moveToStart()
 {
-    cur = head;
+    curr = head;
 }
 
 /**
@@ -191,7 +195,10 @@ void LinkedList<E>::moveToStart()
 template <class E>
 void LinkedList<E>::moveToEnd()
 {
-    cur = tail;
+    while (this->curr->getNext() != this->tail)
+    {
+        this->next();
+    }
 }
 
 /**
@@ -202,16 +209,16 @@ void LinkedList<E>::moveToEnd()
 template <class E>
 void LinkedList<E>::prev()
 {
-    if (cur == head)
+    if (curr == head)
     {
         return;
     }
     Node<E> *temp = head;
-    while (temp->getNext() != cur)
+    while (temp->getNext() != curr)
     {
         temp = temp->getNext();
     }
-    cur = temp;
+    curr = temp;
 }
 
 /**
@@ -222,11 +229,11 @@ void LinkedList<E>::prev()
 template <class E>
 void LinkedList<E>::next()
 {
-    if (cur == tail)
+    if (curr == tail || curr->getNext() == tail)
     {
         return;
     }
-    cur = cur->getNext();
+    curr = curr->getNext();
 }
 
 /**
@@ -248,11 +255,12 @@ int LinkedList<E>::length() const
  * @return int 
  */
 template <class E>
-int LinkedList<E>::curPos() const
+int LinkedList<E>::currPos() const
 {
+    assert(this->size > 0);
     int index = 0;
     Node<E> *temp = head;
-    while (temp != cur)
+    while (temp != curr)
     {
         index++;
         temp = temp->getNext();
@@ -270,10 +278,10 @@ template <class E>
 void LinkedList<E>::moveToPos(int pos)
 {
     assert((pos >= 0) && (pos <= this->size));
-    cur = head;
+    curr = head;
     for (int i = 0; i < pos; i++)
     {
-        cur = cur->getNext();
+        curr = curr->getNext();
     }
 }
 
@@ -286,12 +294,12 @@ void LinkedList<E>::moveToPos(int pos)
 template <class E>
 E LinkedList<E>::getValue() const
 {
-    assert(cur->getNext() != nullptr);
-    return cur->getNext()->getElement();
+    assert(this->size > 0);
+    return curr->getNext()->getElement();
 }
 
 /**
- * @brief returns the index of the first occurance or -1 if not present with O(size) complexity.
+ * @brief returns the index of the first occurrance or -1 if not present with O(size) complexity.
  * 
  * @tparam E 
  * @param item 
@@ -303,7 +311,7 @@ int LinkedList<E>::Search(E item) const
     int index = 0;
     for (Node<E> *temp = head; index < this->size; index++)
     {
-        if (temp->getElement() == item)
+        if (temp->getNext()->getElement() == item)
         {
             return index;
         }
@@ -321,7 +329,7 @@ int LinkedList<E>::Search(E item) const
  */
 
 /**
- * @brief have bugs
+ * @brief 
  * 
  * @tparam E 
  * @param l 
@@ -331,7 +339,7 @@ template <class E>
 LinkedList<E> &LinkedList<E>::operator=(LinkedList<E> &l)
 {
     init();
-    int prevPos = l.curPos();
+    int prevPos = l.currPos();
     for (int i = 0; i < l.length(); i++)
     {
         this->append(l.getValue());
