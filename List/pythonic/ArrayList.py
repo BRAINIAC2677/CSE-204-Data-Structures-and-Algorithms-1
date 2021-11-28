@@ -3,7 +3,7 @@ from List import List
 class ArrayList(List):
     #private helper methods
     def __myInit(self, chunkSize = 100000):
-        assert self.chunkSize > 0, "invalid chunksize"
+        assert chunkSize > 0, "invalid chunksize"
         self.curr = 0
         self.size = 0
         self.chunkSize = chunkSize
