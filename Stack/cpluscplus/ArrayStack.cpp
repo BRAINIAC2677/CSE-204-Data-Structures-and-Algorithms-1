@@ -18,12 +18,13 @@ private:
     void reallocate();
 
 public:
+    //todo: more constructor
     ArrayStack(int initialCapacity = DEFAULT_CAPACITY, int direction = DEFAULT_DIRECTION);
     ~ArrayStack();
     void clear();
     void push(T);
     T pop();
-    int length();
+    long long length();
     T top();
     void setDirection(int direction = 1);
 };
@@ -122,7 +123,7 @@ T ArrayStack<T>::pop()
 }
 
 template <class T>
-int ArrayStack<T>::length()
+long long ArrayStack<T>::length()
 {
     return this->size;
 }

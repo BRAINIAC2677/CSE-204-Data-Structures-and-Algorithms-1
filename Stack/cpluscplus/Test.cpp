@@ -1,10 +1,10 @@
 #include <iostream>
 using namespace std;
-#include "ArrayStack.cpp"
+#include "LinkedStack.cpp"
 
 int main()
 {
-    ArrayStack<int> a(10, -1);
+    LinkedStack<int> a;
     cout << a.length() << "\n";
     for (int i = 0; i < 3; i++)
     {
@@ -16,5 +16,10 @@ int main()
     {
         cout << a.pop() << "\n";
     }
+    LinkedStack<char> b;
+    b.push('a');
+    cout << b.top() << "\n";
+    b.clear();
+    b.top();
     return 0;
 }
