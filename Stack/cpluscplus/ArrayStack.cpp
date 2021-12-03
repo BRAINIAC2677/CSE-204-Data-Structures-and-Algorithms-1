@@ -19,7 +19,14 @@ private:
     void reallocate();
 
 public:
-    // todo: more constructor
+    /*
+    Possible constructors:
+    1. ArrayStack()
+    2. ArrayStack(initialCapacity)
+    3. ArrayStack(initialCapacity, direction)
+    4. ArrayStack(containerMemory, memorySize)
+    5. ArrayStack(containerMemory, memorySize, direction)
+     */
     ArrayStack(T *container, int initialCapacity, int direction = DEFAULT_DIRECTION);
     ArrayStack(int initialCapacity = DEFAULT_CAPACITY, int direction = DEFAULT_DIRECTION);
     ~ArrayStack();

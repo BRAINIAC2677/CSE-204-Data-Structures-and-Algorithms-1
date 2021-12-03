@@ -3,8 +3,6 @@ using namespace std;
 #include "LinkedStack.cpp"
 #include "ArrayStack.cpp"
 
-#define DEFAULT_MEMORY_SIZE 1000
-
 int main()
 {
     int n, x;
@@ -14,11 +12,11 @@ int main()
     {
         cin >> a[i];
     }
-    LinkedStack<int> dirty, cleaned;
-    LinkedStack<int> full_meal_friends;
-    /*     int *p = new int[DEFAULT_MEMORY_SIZE];
-        ArrayStack<int> dirty(p, DEFAULT_MEMORY_SIZE), cleaned(p, DEFAULT_MEMORY_SIZE, -1);
-        ArrayStack<int> full_meal_friends; */
+    /*     LinkedStack<int> dirty, cleaned;
+        LinkedStack<int> full_meal_friends; */
+    int *p = new int[n * x];
+    ArrayStack<int> dirty(p, n * x), cleaned(p, n * x, -1);
+    ArrayStack<int> full_meal_friends;
     int washing_clock = 0;
     while (true)
     {
@@ -63,15 +61,15 @@ int main()
     }
     while (temp.length() > 0)
     {
-        cout << temp.pop() << " ";
+        cout << temp.pop();
+        cout << (temp.length() > 0 ? "," : "\n");
     }
-    cout << "\n";
     cout << (full_meal_friends.length() == n ? "Y" : "N") << "\n";
     while (full_meal_friends.length() > 0)
     {
-        cout << full_meal_friends.pop() << " ";
+        cout << full_meal_friends.pop();
+        cout << (full_meal_friends.length() > 0 ? "," : "\n");
     }
-    cout << "\n";
-    // delete[] p;
+    delete[] p;
     return 0;
 }
