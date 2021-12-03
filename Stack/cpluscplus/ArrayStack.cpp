@@ -9,6 +9,7 @@ template <class T>
 class ArrayStack : public Stack<T>
 {
 private:
+    int isTwoStack;
     int direction;
     long long size;
     long long initialCapacity;
@@ -18,7 +19,8 @@ private:
     void reallocate();
 
 public:
-    //todo: more constructor
+    // todo: more constructor
+    ArrayStack(T *container, int initialCapacity, int direction = DEFAULT_DIRECTION);
     ArrayStack(int initialCapacity = DEFAULT_CAPACITY, int direction = DEFAULT_DIRECTION);
     ~ArrayStack();
     void clear();
@@ -66,24 +68,45 @@ void ArrayStack<T>::reallocate()
 
 //=================== public member functions definition ========================
 template <class T>
+ArrayStack<T>::ArrayStack(T *container, int initialCapacity, int direction)
+{
+    assert(direction == 1 || direction == -1);
+    assert(initialCapacity > 0);
+    this->isTwoStack = 1;
+    this->direction = direction;
+    this->size = 0;
+    this->initialCapacity = initialCapacity;
+    this->currentCapacity = this->initialCapacity;
+    this->container = container;
+}
+
+template <class T>
 ArrayStack<T>::ArrayStack(int initialCapacity, int direction)
 {
     assert(initialCapacity > 0);
     assert(direction == 1 || direction == -1);
+    this->isTwoStack = 0;
     this->init(initialCapacity, direction);
 }
 
 template <class T>
 ArrayStack<T>::~ArrayStack()
 {
-    delete[] this->container;
+    if (this->isTwoStack == 0)
+    {
+        delete[] this->container;
+    }
 }
 
 template <class T>
 void ArrayStack<T>::clear()
 {
-    delete[] this->container;
-    //on clearing the stack is initialized with the previous initialCapacity and direction
+    if (this->isTwoStack == 0)
+    {
+        delete[] this->container;
+    }
+    //  on clearing the stack is initialized with the previous initialCapacity and direction
+    // here min is applied on capacity as capacity of 2 stack 1 array constructor is set to LONG_MAX
     this->init(this->initialCapacity, this->direction);
 }
 

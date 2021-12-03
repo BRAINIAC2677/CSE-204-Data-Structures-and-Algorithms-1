@@ -1,7 +1,9 @@
 #include <iostream>
 using namespace std;
-//#include "LinkedStack.cpp"
+#include "LinkedStack.cpp"
 #include "ArrayStack.cpp"
+
+#define DEFAULT_MEMORY_SIZE 1000
 
 int main()
 {
@@ -12,10 +14,11 @@ int main()
     {
         cin >> a[i];
     }
-    /*     LinkedStack<int> dirty, cleaned;
-        LinkedStack<int> full_meal_friends; */
-    ArrayStack<int> dirty, cleaned;
-    ArrayStack<int> full_meal_friends;
+    LinkedStack<int> dirty, cleaned;
+    LinkedStack<int> full_meal_friends;
+    /*     int *p = new int[DEFAULT_MEMORY_SIZE];
+        ArrayStack<int> dirty(p, DEFAULT_MEMORY_SIZE), cleaned(p, DEFAULT_MEMORY_SIZE, -1);
+        ArrayStack<int> full_meal_friends; */
     int washing_clock = 0;
     while (true)
     {
@@ -52,8 +55,8 @@ int main()
         }
     }
     cout << cleaned.top() << "\n";
-    // LinkedStack<int> temp;
-    ArrayStack<int> temp;
+    LinkedStack<int> temp;
+    // ArrayStack<int> temp;
     while (cleaned.length() > 0)
     {
         temp.push(cleaned.pop());
@@ -69,5 +72,6 @@ int main()
         cout << full_meal_friends.pop() << " ";
     }
     cout << "\n";
+    // delete[] p;
     return 0;
 }

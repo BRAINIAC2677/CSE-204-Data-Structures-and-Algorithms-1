@@ -40,63 +40,12 @@ void printArrayStack(LinkedStack<E> &stk)
 
 int main()
 {
-    int k;
-    cin >> k;
-    ArrayStack<int> stk;
-    for (int i = 0; i < k; i++)
-    {
-        int a;
-        cin >> a;
-        stk.push(a);
-    }
-    printArrayStack(stk);
-    while (77)
-    {
-        int q, p;
-        cin >> q >> p;
-        if (!q)
-        {
-            break;
-        }
-        switch (q)
-        {
-        case 1:
-        {
-            stk.clear();
-            cout << "-1\n";
-            break;
-        }
-        case 2:
-        {
-            stk.push(p);
-            cout << "-1\n";
-            break;
-        }
-        case 3:
-        {
-            cout << stk.pop() << "\n";
-            break;
-        }
-        case 4:
-        {
-            cout << stk.length() << "\n";
-            break;
-        }
-        case 5:
-        {
-            cout << stk.top() << "\n";
-            break;
-        }
-        case 6:
-        {
-            stk.setDirection(p);
-            cout << "-1\n";
-            break;
-        }
-        default:
-            break;
-        }
-        printArrayStack(stk);
-    }
+    int *p = new int[100];
+    ArrayStack<int> a(p, 100), b(p, 100, -1);
+    a.push(5);
+    a.push(7);
+    b.push(999);
+    printArrayStack(a);
+    printArrayStack(b);
     return 0;
 }
