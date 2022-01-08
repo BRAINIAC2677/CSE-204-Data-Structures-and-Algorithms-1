@@ -13,7 +13,6 @@ int main()
     {
         char op;
         in >> op;
-        out << op << " ";
         if (op == 'F')
         {
             int key;
