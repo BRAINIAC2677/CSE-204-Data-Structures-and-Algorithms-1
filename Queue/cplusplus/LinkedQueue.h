@@ -1,6 +1,11 @@
 #include "Queue.h"
 #include <assert.h>
+#include <stdio.h>
+using namespace std;
 
+/*
+Unfixed bug in LinkedQueue. Gets random segmentation fault on operations.
+*/
 template <class T>
 class Node
 {
@@ -16,6 +21,10 @@ public:
     T getElement() const
     {
         return element;
+    }
+    void setElement(const T &element)
+    {
+        this->element = element;
     }
     Node<T> *getNext() const
     {
@@ -72,6 +81,7 @@ void LinkedQueue<T>::clear()
 template <class T>
 void LinkedQueue<T>::enqueue(T item)
 {
+    cout << "Enqueue\n";
     Node<T> *newNode = new Node<T>(item);
     this->rear->setNext(newNode);
     this->rear = this->rear->getNext();
@@ -82,10 +92,11 @@ template <class T>
 T LinkedQueue<T>::dequeue()
 {
     assert(this->size > 0);
+    cout << "Deqeue\n";
     this->size--;
     Node<T> *temp = this->front->getNext();
     T ret = temp->getElement();
-    this->front = temp->getNext();
+    this->front->setNext(temp->getNext());
     delete temp;
     return ret;
 }

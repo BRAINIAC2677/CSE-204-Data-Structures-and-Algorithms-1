@@ -1,6 +1,6 @@
 #include "Queue.h"
 #include <assert.h>
-#define DEFAULT_CAPACITY 1000
+#define DEFAULT_CAPACITY 100000
 
 template <class T>
 class ArrayQueue : public Queue<T>
@@ -31,7 +31,7 @@ template <class T>
 void ArrayQueue<T>::init(int maxCapacity)
 {
     this->maxCapacity = maxCapacity;
-    this->container = new T[maxCapacity];
+    this->container = new T[this->maxCapacity];
     this->rear = 0;
     this->front = 1;
 }
@@ -40,13 +40,16 @@ template <class T>
 void ArrayQueue<T>::reallocate()
 {
     T *tempContainer = new T[this->maxCapacity * 2];
-    for (int i = front;; i = (i + 1) % this->maxCapacity)
+    int i = 0;
+    for (; this->length() > 0; i++)
     {
-        tempContainer[i] = this->container[i];
-        if (i == rear)
-        {
-            break;
-        }
+        tempContainer[i] = this->dequeue();
+    }
+    this->front = 0;
+    this->rear = i - 1;
+    if (this->isContainerGiven == 0)
+    {
+        delete[] this->container;
     }
     this->container = tempContainer;
     this->maxCapacity *= 2;
@@ -64,6 +67,7 @@ ArrayQueue<T>::ArrayQueue(T *container, int size)
 {
     this->isContainerGiven = 1;
     this->maxCapacity = size;
+    this->container = container;
     this->rear = 0;
     this->front = 1;
 }
