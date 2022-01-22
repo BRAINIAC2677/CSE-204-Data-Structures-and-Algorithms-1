@@ -26,8 +26,8 @@ int main()
 
     int k;
     cin >> k;
-    ArrayQueue<int> qu;
-    // LinkedQueue<int> qu;
+    // ArrayQueue<int> qu;
+    LinkedQueue<int> qu;
     for (int i = 0; i < k; i++)
     {
         int a;

@@ -13,7 +13,7 @@ class Node
     Node<T> *next;
 
 public:
-    Node(T e = NULL, Node<T> *n = nullptr)
+    Node(T e = {}, Node<T> *n = nullptr)
     {
         element = e;
         next = n;
@@ -81,7 +81,7 @@ void LinkedQueue<T>::clear()
 template <class T>
 void LinkedQueue<T>::enqueue(T item)
 {
-    cout << "Enqueue\n";
+    assert(this->rear);
     Node<T> *newNode = new Node<T>(item);
     this->rear->setNext(newNode);
     this->rear = this->rear->getNext();
@@ -92,11 +92,14 @@ template <class T>
 T LinkedQueue<T>::dequeue()
 {
     assert(this->size > 0);
-    cout << "Deqeue\n";
     this->size--;
     Node<T> *temp = this->front->getNext();
     T ret = temp->getElement();
     this->front->setNext(temp->getNext());
+    if (temp == this->rear)
+    {
+        this->rear = this->front;
+    }
     delete temp;
     return ret;
 }
