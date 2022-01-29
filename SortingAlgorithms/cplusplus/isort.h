@@ -32,7 +32,7 @@ void isortHelper(vector<T> &container, int start, int end, bool (*comp)(T, T))
     {
         T key = container[i];
         int j = i - 1;
-        while (j >= 0 && comp(key, container[j]))
+        while (j >= start && comp(key, container[j]))
         {
             container[j + 1] = container[j];
             j--;

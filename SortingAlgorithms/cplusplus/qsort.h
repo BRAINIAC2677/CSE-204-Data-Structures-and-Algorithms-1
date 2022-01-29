@@ -37,7 +37,7 @@ int partition(vector<T> &container, int l, int r, bool (*comp)(T, T), bool isRan
     if (isRandomized)
     {
         srand(time(nullptr));
-        int pivotInd = l + rand() % (r - l + 1);
+        pivotInd = l + rand() % (r - l + 1);
     }
     T pivot = container[pivotInd];
     int i = l - 1, j = l;

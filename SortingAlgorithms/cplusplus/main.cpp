@@ -92,11 +92,11 @@ int main()
     string header = "n,MergeSort(ms),QuickSort(ms),Randomized QuickSort(ms),InsertionSort(ms),STL(ms),QuickSort With Sorted Input(ms),Randomized QuickSort With Sorted Input(ms)\n";
 
     ofstream out("output.csv", ios::out);
-    vector<int> n_values = {5, 10, 100, 1000, 10000, 100000};
+    vector<int> n_values = {5, 10, 100, 1000, 10000};
     out << header;
     for (auto n : n_values)
     {
-        print_csv(out, avgSortingTimes(n));
+        print_csv(out, avgSortingTimes(n, 5));
     }
     out.close();
 
